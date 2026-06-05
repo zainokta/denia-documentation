@@ -10,14 +10,7 @@ local Docker, no git remote, no pre-deploy commit. Assumes you have run
 `sudo denia setup` and created an admin account via `/v1/bootstrap` (see
 [Installation](installation.md)).
 
-## 1. Create the service
-
-Services are created in the web console (recommended) or with `POST /v1/services`.
-In the console: pick a project (a `default` project exists on a fresh install),
-choose **Upload** as the source, set the listen port and health-check path, and
-save. Note the service name.
-
-## 2. Authenticate the client
+## 1. Authenticate the client
 
 On your dev machine:
 
@@ -26,16 +19,40 @@ denia auth --url https://your-node.example.com
 # prompts for username + password; mints and stores a long-lived API token (0600)
 ```
 
-## 3. Add a `.denia` manifest
+## 2. Scaffold a `.denia` manifest
 
-Commit a `.denia` file to your project root so you don't repeat flags:
+From your project root:
+
+```bash
+denia init
+```
+
+This writes a `.denia` template. Edit the values — at minimum the project,
+service name, and listen port:
 
 ```toml
-project    = "default"
-service    = "api"
-dockerfile = "Dockerfile"
-context    = "."
+project = "default"
+service = "api"
+
+# dockerfile = "Dockerfile"
+# context    = "."
+
+[create]
+port = 8080
+# health_path = "/healthz"
 ```
+
+## 3. Create the service
+
+```bash
+denia create
+```
+
+`denia create` reads `.denia` and creates the service with an **upload** source —
+its image is built from the working tree you push, so there is no Git repo or
+image reference to configure. (You can also create the service in the web
+console: pick a project, choose **Upload** as the source, set the listen port and
+health-check path, and save.)
 
 ## 4. Push
 
@@ -48,6 +65,9 @@ denia push
 Denia packs your working tree (honoring `.gitignore`/`.dockerignore`), uploads it,
 builds the Dockerfile with BuildKit on the node, runs the health-gated deploy, and
 tails the build + deploy logs until the service reports `Healthy`.
+
+> Shortcut: `denia push --create` does steps 3 and 4 in one go (it still needs a
+> `[create]` block in `.denia`).
 
 ## 5. Expose it
 
