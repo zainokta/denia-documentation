@@ -9,7 +9,7 @@ RUN corepack enable
 WORKDIR /app
 
 # Install deps first for better layer caching
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
 # Build the static site
