@@ -17,11 +17,13 @@ COPY . .
 RUN pnpm build
 
 # ---- Serve stage ----
-FROM nginx:1.27 AS serve
+# Unprivileged image runs as a non-root user (uid 101) — required for read-only rootfs.
+FROM nginxinc/nginx-unprivileged:1.27 AS serve
 
+# Full main config: writable paths -> /tmp, logs -> stdout/stderr, listen 8080.
+COPY nginx.conf /etc/nginx/nginx.conf
 COPY --from=build /app/build /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-EXPOSE 80
+EXPOSE 8080
 
 CMD ["nginx", "-g", "daemon off;"]
