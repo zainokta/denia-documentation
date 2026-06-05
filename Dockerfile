@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # ---- Build stage ----
-FROM node:20-alpine AS build
+FROM node:22-slim AS build
 
 # Enable pnpm via corepack
 RUN corepack enable
@@ -17,7 +17,7 @@ COPY . .
 RUN pnpm build
 
 # ---- Serve stage ----
-FROM nginx:1.27-alpine AS serve
+FROM nginx:1.27 AS serve
 
 COPY --from=build /app/build /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
