@@ -24,6 +24,16 @@ FROM nginxinc/nginx-unprivileged:1.27 AS serve
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY --from=build /app/build /usr/share/nginx/html
 
+# nginx needs a writable spot for its pid + temp dirs. The rootfs is read-only,
+# so expose /tmp as a volume (writable even under `docker run --read-only`) and
+# pre-create the temp dirs owned by the unprivileged user.
+USER root
+RUN mkdir -p /tmp/client_temp /tmp/proxy_temp /tmp/fastcgi_temp \
+             /tmp/uwsgi_temp /tmp/scgi_temp \
+    && chown -R 101:101 /tmp
+USER 101
+VOLUME ["/tmp"]
+
 EXPOSE 8080
 
 CMD ["nginx", "-g", "daemon off;"]
