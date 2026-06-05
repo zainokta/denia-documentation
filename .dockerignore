@@ -1,0 +1,14 @@
+node_modules
+build
+.docusaurus
+.cache-loader
+.git
+.gitignore
+*.log
+.DS_Store
+.env.local
+.env.*.local
+codedb.snapshot
+Dockerfile
+.dockerignore
+README.md
