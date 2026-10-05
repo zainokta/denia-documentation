@@ -38,6 +38,7 @@ const sidebars: SidebarsConfig = {
         'guides/deploy-external-image',
         'guides/deploy-from-your-machine',
         'guides/custom-domains-tls',
+        'guides/domains-behind-cloudflare',
         'guides/managing-secrets',
         'guides/scheduled-jobs',
         'guides/hosted-registry',

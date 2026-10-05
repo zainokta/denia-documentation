@@ -22,6 +22,13 @@ is set, and `:80` is reachable from the public internet (HTTP-01). While testing
 use the Let's Encrypt **staging** directory (`DENIA_ACME_DIRECTORY_URL`), then
 switch to production. See [Custom domains & TLS](../guides/custom-domains-tls.md).
 
+### Domain behind Cloudflare fails to verify or issue
+
+A proxied Cloudflare record works with HTTP-01, but Always Use HTTPS, Bot Fight
+Mode, and WAF challenges can block `/.well-known/` requests before they reach
+Denia. See [Domains behind Cloudflare](../guides/domains-behind-cloudflare.md)
+for the settings to change.
+
 ### User-namespace / overlay errors at runtime
 
 You need kernel ≥ 5.11, cgroup v2, and unprivileged user namespaces enabled (on

@@ -60,4 +60,6 @@ that hostname. See [ADR-035](../architecture/design-decisions.md).
 
 If TLS fails: confirm DNS resolves here, the domain is **verified**,
 `DENIA_ACME_EMAIL` is set, and `:80` is reachable from the public internet
-(HTTP-01 requirement). More in [Troubleshooting](../operations/troubleshooting.md).
+(HTTP-01 requirement). If the hostname is proxied by Cloudflare, see
+[Domains behind Cloudflare](domains-behind-cloudflare.md). More in
+[Troubleshooting](../operations/troubleshooting.md).
